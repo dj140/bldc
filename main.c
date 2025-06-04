@@ -43,6 +43,7 @@
 #include "timeout.h"
 #include "encoder/encoder.h"
 #include "pwm_servo.h"
+#include "pwm_buzzer.h"
 #include "utils_math.h"
 #include "nrf_driver.h"
 #include "rfhelp.h"
@@ -340,11 +341,19 @@ int main(void) {
 
 	imu_reset_orientation();
 
-	chThdSleepMilliseconds(500);
+	chThdSleepMilliseconds(100);
 	m_init_done = true;
 
 #ifdef BOOT_OK_GPIO
 	palSetPad(BOOT_OK_GPIO, BOOT_OK_PIN);
+	chThdSleepMilliseconds(100);
+	palClearPad(BOOT_OK_GPIO, BOOT_OK_PIN);
+#endif
+
+#ifdef BOOT_OK_BUZZER
+    pwm_buzzer_set_buzzer_freq_duty(BUZZER_OUT_RATE_HZ, 0.5);
+	chThdSleepMilliseconds(100);
+    pwm_buzzer_set_buzzer_out(0);
 #endif
 
 #ifdef CAN_ENABLE

@@ -34,6 +34,7 @@
 #include "timeout.h"
 #include "servo_dec.h"
 #include "pwm_servo.h"
+#include "pwm_buzzer.h"
 #include "encoder/encoder.h"
 #include "comm_can.h"
 #include "bms.h"
@@ -669,6 +670,26 @@ static lbm_value ext_set_servo(lbm_value *args, lbm_uint argn) {
 	pwm_servo_set_servo_out(lbm_dec_as_float(args[0]));
 	return ENC_SYM_TRUE;
 }
+
+#ifdef HW_BUZZER_PIN
+static lbm_value ext_set_buzzer(lbm_value *args, lbm_uint argn) {
+	LBM_CHECK_ARGN_NUMBER(1);
+	pwm_buzzer_set_buzzer_out(lbm_dec_as_float(args[0]));
+	return ENC_SYM_TRUE;
+}
+
+static lbm_value ext_set_buzzer_freq_duty(lbm_value *args, lbm_uint argn) {
+	LBM_CHECK_ARGN_NUMBER(2);
+	pwm_buzzer_set_buzzer_freq_duty(lbm_dec_as_u32(args[0]),lbm_dec_as_float(args[1]));
+	return ENC_SYM_TRUE;
+}
+
+static lbm_value ext_set_buzzer_tone(lbm_value *args, lbm_uint argn) {
+	LBM_CHECK_ARGN_NUMBER(2);
+	play_tone(lbm_dec_as_float(args[0]),lbm_dec_as_u32(args[1]));
+	return ENC_SYM_TRUE;
+}
+#endif
 
 static lbm_value ext_reset_timeout(lbm_value *args, lbm_uint argn) {
 	(void)args; (void)argn;
@@ -5273,6 +5294,11 @@ void lispif_load_vesc_extensions(void) {
 	lbm_add_extension("get-ppm", ext_get_ppm);
 	lbm_add_extension("get-ppm-age", ext_get_ppm_age);
 	lbm_add_extension("set-servo", ext_set_servo);
+	#ifdef HW_BUZZER_PIN
+	lbm_add_extension("set-buzzer", ext_set_buzzer);
+	lbm_add_extension("set-buzzer-freq", ext_set_buzzer_freq_duty);
+	lbm_add_extension("set-buzzer-tone", ext_set_buzzer_tone);
+	#endif
 	lbm_add_extension("get-vin", ext_get_vin);
 	lbm_add_extension("select-motor", ext_select_motor);
 	lbm_add_extension("get-selected-motor", ext_get_selected_motor);

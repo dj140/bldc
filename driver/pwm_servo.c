@@ -78,8 +78,9 @@ void pwm_servo_stop(void) {
 	if (m_is_running) {
 		palSetPadMode(HW_ICU_GPIO, HW_ICU_PIN, PAL_MODE_INPUT);
 	}
-
+#ifndef HW_BUZZER_PIN
 	TIM_DeInit(HW_ICU_TIMER);
+#endif
 	m_is_running = false;
 }
 

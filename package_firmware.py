@@ -195,6 +195,9 @@ package_dict["RSR_DD_V1"] = [['RSR_DD_V1', default_name],
 package_dict["RSR_DD_V2"] = [['RSR_DD_V2', default_name]]
 package_dict["RSR_DD_V2.1"] = [['RSR_DD_V2.1', default_name]]
 
+package_dict["MKESC_75_100"] = [['mkesc_75_100', default_name],
+                    ['mkesc_75_100_no_limits', no_limits_name]]
+                    
 # This is the firmware stub string
 res_firmwares_string = '        <file>TARGET_DESTINATION_DIRECTORY/TARGET_DESTINATION_FILENAME</file>\n'
 
